@@ -86,7 +86,6 @@ class FormModel {
         mb_language("Japanese");
         mb_internal_encoding("UTF-8");
         
-        // 設定ファイルから表示ラベルを取得
         $labels = include(__DIR__ . '/../config/labels.php');
         $serviceNames = $labels['services'];
         $categoryNames = $labels['categories'];
@@ -115,10 +114,8 @@ class FormModel {
         $body .= "お客様への返信は、上記メールアドレス宛に行ってください。\n";
         $body .= "────────────────────────────\n";
         
-        // メール送信ログをファイルに記録
         $this->logEmailContent($to, $from, $subject, $body);
         
-        // メール送信
         $headers = "From: " . $from . "\r\n";
         $headers .= "Reply-To: " . $from . "\r\n";
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
@@ -136,7 +133,6 @@ class FormModel {
         $logData .= "本文:\n{$body}\n";
         $logData .= "========================\n\n";
         
-        // ログファイルに追記
         file_put_contents('data/email_log.txt', $logData, FILE_APPEND | LOCK_EX);
     }
 }

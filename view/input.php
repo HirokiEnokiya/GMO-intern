@@ -8,7 +8,6 @@
 </head>
 <body>
     <?php
-    // 設定ファイルから表示ラベルを取得
     $labels = include(__DIR__ . '/../config/labels.php');
     $serviceLabels = $labels['services'];
     $categoryLabels = $labels['categories'];
@@ -101,7 +100,6 @@
     </div>
 
     <script>
-        // PHPの設定ファイルからJavaScript用データを生成
         const categoryOptions = {
             <?php 
             $categoryValidation = [
@@ -136,11 +134,9 @@
             <?php endforeach; ?>
         };
 
-        // 現在選択されている値を保存（PHP側から取得）
         const currentCategory = '<?php echo htmlspecialchars($data['category'] ?? '', ENT_QUOTES); ?>';
         const currentPlans = <?php echo json_encode($data['plan'] ?? []); ?>;
 
-        // カテゴリーオプションを生成する関数
         function updateCategoryOptions(service) {
             const categoryContainer = document.getElementById('categoryOptions');
             categoryContainer.innerHTML = '';
@@ -156,7 +152,6 @@
                     radioInput.name = 'category';
                     radioInput.value = option.value;
                     
-                    // 最初のオプションをデフォルト選択、または以前の選択値を復元
                     if (currentCategory === option.value || (!currentCategory && index === 0)) {
                         radioInput.checked = true;
                     }
@@ -171,6 +166,7 @@
                 });
             } else {
                 // サービスが選択されていない場合のメッセージ
+                // TODO: スタイルをCSSで修正
                 const messageDiv = document.createElement('div');
                 messageDiv.style.color = '#666';
                 messageDiv.style.fontStyle = 'italic';
@@ -179,7 +175,6 @@
             }
         }
 
-        // プランオプションを生成する関数
         function updatePlanOptions(service) {
             const planContainer = document.getElementById('planOptions');
             planContainer.innerHTML = '';
@@ -195,7 +190,6 @@
                     checkboxInput.name = 'plan[]';
                     checkboxInput.value = option.value;
                     
-                    // 以前の選択値を復元
                     if (currentPlans.includes(option.value)) {
                         checkboxInput.checked = true;
                     }
@@ -210,6 +204,7 @@
                 });
             } else {
                 // サービスが選択されていない場合のメッセージ
+                // TODO: スタイルをCSSで修正
                 const messageDiv = document.createElement('div');
                 messageDiv.style.color = '#666';
                 messageDiv.style.fontStyle = 'italic';
@@ -218,15 +213,12 @@
             }
         }
 
-        // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', function() {
             const serviceSelect = document.getElementById('service');
             
-            // 初期表示時にカテゴリーとプランを設定
             updateCategoryOptions(serviceSelect.value);
             updatePlanOptions(serviceSelect.value);
             
-            // サービス変更時のイベントリスナー
             serviceSelect.addEventListener('change', function() {
                 updateCategoryOptions(this.value);
                 updatePlanOptions(this.value);

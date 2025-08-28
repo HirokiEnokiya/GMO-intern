@@ -29,7 +29,6 @@ class FormController {
                 'message' => $_POST['message'] ?? ''
             ];
             
-            // バリデーション
             $errors = $this->model->validate($data);
             
             if (!empty($errors)) {
@@ -39,10 +38,8 @@ class FormController {
                 exit;
             }
             
-            // セッションにデータを保存
             $_SESSION['form_data'] = $data;
         } else {
-            // POSTでない場合は入力画面にリダイレクト
             header('Location: index.php?action=input');
             exit;
         }
@@ -54,24 +51,19 @@ class FormController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['form_data'])) {
             $data = $_SESSION['form_data'];
             
-            // データを保存（実際のアプリケーションではデータベースに保存）
             $result = $this->model->save($data);
             
             if ($result) {
-                // 成功時はセッションをクリア
                 unset($_SESSION['form_data']);
                 include 'view/complete.php';
             } else {
-                // 失敗時はエラーメッセージを設定して入力画面に戻る
                 $_SESSION['errors'] = ['保存に失敗しました。もう一度お試しください。'];
                 header('Location: index.php?action=input');
                 exit;
             }
 
-            // メールを送信
             $this->model->sendEmail($data);
         } else {
-            // 不正なアクセスの場合は入力画面にリダイレクト
             header('Location: index.php?action=input');
             exit;
         }

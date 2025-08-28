@@ -8,7 +8,6 @@
 </head>
 <body>
     <?php
-    // 設定ファイルから表示ラベルを取得
     $labels = include(__DIR__ . '/../config/labels.php');
     $serviceLabels = $labels['services'];
     $categoryLabels = $labels['categories'];
