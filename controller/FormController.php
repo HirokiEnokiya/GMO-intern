@@ -8,19 +8,16 @@ class FormController {
         $this->model = new FormModel();
     }
     
-    // 入力画面を表示
     public function showInput() {
         $errors = $_SESSION['errors'] ?? [];
         $data = $_SESSION['form_data'] ?? [];
         
-        // エラーとデータをクリア
         unset($_SESSION['errors']);
         unset($_SESSION['form_data']);
         
         include 'view/input.php';
     }
     
-    // 確認画面を表示
     public function showConfirm() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -53,7 +50,6 @@ class FormController {
         include 'view/confirm.php';
     }
     
-    // 完了処理
     public function complete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['form_data'])) {
             $data = $_SESSION['form_data'];

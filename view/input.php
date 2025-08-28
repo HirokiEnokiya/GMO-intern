@@ -64,7 +64,6 @@
                 <fieldset>
                     <legend>プラン</legend>
                     <div class="checkbox-group" id="planOptions">
-                        <!-- JavaScriptで動的に生成される -->
                     </div>
                     <?php if (isset($errors['plan'])): ?>
                         <div class="error"><?php echo htmlspecialchars($errors['plan']); ?></div>
