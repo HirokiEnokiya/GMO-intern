@@ -81,5 +81,63 @@ class FormModel {
         
         return $result !== false;
     }
+
+    public function sendEmail($data) {
+        mb_language("Japanese");
+        mb_internal_encoding("UTF-8");
+        
+        // 設定ファイルから表示ラベルを取得
+        $labels = include(__DIR__ . '/../config/labels.php');
+        $serviceNames = $labels['services'];
+        $categoryNames = $labels['categories'];
+        
+        $to = "admin@gmo-intern.com";
+        $from = "system@gmo-intern.com";
+        $subject = "【新規お問い合わせ】" . $data['name'] . "様より";
+        
+        $body = "新規お問い合わせが届きました。\n";
+        $body .= "速やかに対応をお願いいたします。\n\n";
+        $body .= "【お問い合わせ詳細】\n";
+        $body .= "受信日時：" . date('Y年m月d日 H:i:s') . "\n";
+        $body .= "お名前：" . $data['name'] . "\n";
+        $body .= "メールアドレス：" . $data['email'] . "\n";
+        $body .= "サービス：" . ($serviceNames[$data['service']] ?? $data['service']) . "\n";
+        $body .= "カテゴリー：" . ($categoryNames[$data['category']] ?? $data['category']) . "\n";
+        
+        if (!empty($data['plan']) && is_array($data['plan'])) {
+            $body .= "選択プラン：" . implode(', ', $data['plan']) . "\n";
+        }
+        
+        $body .= "\n【お問い合わせ内容】\n";
+        $body .= $data['message'] . "\n\n";
+        $body .= "────────────────────────────\n";
+        $body .= "※このメールは自動送信されています。\n";
+        $body .= "お客様への返信は、上記メールアドレス宛に行ってください。\n";
+        $body .= "────────────────────────────\n";
+        
+        // メール送信ログをファイルに記録
+        $this->logEmailContent($to, $from, $subject, $body);
+        
+        // メール送信
+        $headers = "From: " . $from . "\r\n";
+        $headers .= "Reply-To: " . $from . "\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+        
+        return mb_send_mail($to, $subject, $body, $headers);
+    }
+    
+    private function logEmailContent($to, $from, $subject, $body) {
+        $logData = "=== メール送信ログ ===\n";
+        $logData .= "送信日時: " . date('Y-m-d H:i:s') . "\n";
+        $logData .= "宛先: {$to}\n";
+        $logData .= "送信者: {$from}\n";
+        $logData .= "件名: {$subject}\n";
+        $logData .= "本文:\n{$body}\n";
+        $logData .= "========================\n\n";
+        
+        // ログファイルに追記
+        file_put_contents('data/email_log.txt', $logData, FILE_APPEND | LOCK_EX);
+    }
 }
 ?>

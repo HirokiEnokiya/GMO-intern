@@ -67,6 +67,9 @@ class FormController {
                 header('Location: index.php?action=input');
                 exit;
             }
+
+            // メールを送信
+            $this->model->sendEmail($data);
         } else {
             // 不正なアクセスの場合は入力画面にリダイレクト
             header('Location: index.php?action=input');
