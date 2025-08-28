@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <?php
+    $labels = include(__DIR__ . '/../config/labels.php');
+    $serviceLabels = $labels['services'];
+    $categoryLabels = $labels['categories'];
+    $planLabels = $labels['plans'];
+    ?>
+    
     <div class="container">
         <h1>お問い合わせフォーム</h1>
         
@@ -40,9 +47,11 @@
                 <label for="service">サービス <span class="required">*</span></label>
                 <select name="service" id="service" class="<?php echo isset($errors['service']) ? 'error-border' : ''; ?>">
                     <option value="">選択してください</option>
-                    <option value="conoha" <?php echo (($data['service'] ?? '') === 'conoha') ? 'selected' : ''; ?>>ConoHa</option>
-                    <option value="onamae" <?php echo (($data['service'] ?? '') === 'onamae') ? 'selected' : ''; ?>>お名前.com</option>
-                    <option value="tokutoku" <?php echo (($data['service'] ?? '') === 'tokutoku') ? 'selected' : ''; ?>>とくとくBB</option>
+                    <?php foreach ($serviceLabels as $value => $label): ?>
+                    <option value="<?php echo htmlspecialchars($value); ?>" <?php echo (($data['service'] ?? '') === $value) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($label); ?>
+                    </option>
+                    <?php endforeach; ?>
                 </select>
                 <?php if (isset($errors['service'])): ?>
                     <div class="error"><?php echo htmlspecialchars($errors['service']); ?></div>
@@ -92,58 +101,42 @@
 
     <script>
         const categoryOptions = {
-            'conoha': [
-                { value: 'server', label: 'サーバーについて' },
-                { value: 'plan', label: 'プランについて' },
-                { value: 'payment', label: 'お支払いについて' },
-                { value: 'support', label: 'サポートについて' }
+            <?php 
+            $categoryValidation = [
+                'conoha' => ['server', 'plan', 'payment', 'support'],
+                'onamae' => ['domain_register', 'domain_transfer', 'dns', 'payment'],
+                'tokutoku' => ['internet', 'speed', 'device', 'billing']
+            ];
+            
+            foreach ($categoryValidation as $service => $categories): ?>
+            '<?php echo $service; ?>': [
+                <?php foreach ($categories as $category): ?>
+                { value: '<?php echo $category; ?>', label: '<?php echo addslashes($categoryLabels[$category] ?? $category); ?>' },
+                <?php endforeach; ?>
             ],
-            'onamae': [
-                { value: 'domain_register', label: 'ドメイン登録について' },
-                { value: 'domain_transfer', label: 'ドメイン移管について' },
-                { value: 'dns', label: 'DNS設定について' },
-                { value: 'payment', label: 'お支払いについて' }
-            ],
-            'tokutoku': [
-                { value: 'internet', label: 'インターネット接続について' },
-                { value: 'speed', label: '通信速度について' },
-                { value: 'device', label: 'デバイスについて' },
-                { value: 'billing', label: 'ご請求について' }
-            ]
+            <?php endforeach; ?>
         };
 
         const planOptions = {
-            'conoha': [
-                { value: 'vps_512mb', label: 'VPS 512MB' },
-                { value: 'vps_1gb', label: 'VPS 1GB' },
-                { value: 'vps_2gb', label: 'VPS 2GB' },
-                { value: 'wing_basic', label: 'WINGベーシック' },
-                { value: 'wing_standard', label: 'WINGスタンダード' },
-                { value: 'wing_premium', label: 'WINGプレミアム' }
+            <?php 
+            $planValidation = [
+                'conoha' => ['vps_512mb', 'vps_1gb', 'vps_2gb', 'wing_basic', 'wing_standard', 'wing_premium'],
+                'onamae' => ['domain_com', 'domain_net', 'domain_org', 'domain_jp', 'ssl_certificate', 'whois_privacy'],
+                'tokutoku' => ['fiber_100m', 'fiber_1g', 'wimax_unlimited', 'mobile_wifi', 'ipv6_option', 'security_option']
+            ];
+            
+            foreach ($planValidation as $service => $plans): ?>
+            '<?php echo $service; ?>': [
+                <?php foreach ($plans as $plan): ?>
+                { value: '<?php echo $plan; ?>', label: '<?php echo addslashes($planLabels[$plan] ?? $plan); ?>' },
+                <?php endforeach; ?>
             ],
-            'onamae': [
-                { value: 'domain_com', label: '.comドメイン' },
-                { value: 'domain_net', label: '.netドメイン' },
-                { value: 'domain_org', label: '.orgドメイン' },
-                { value: 'domain_jp', label: '.jpドメイン' },
-                { value: 'ssl_certificate', label: 'SSL証明書' },
-                { value: 'whois_privacy', label: 'Whoisプライバシー' }
-            ],
-            'tokutoku': [
-                { value: 'fiber_100m', label: '光回線 100Mbps' },
-                { value: 'fiber_1g', label: '光回線 1Gbps' },
-                { value: 'wimax_unlimited', label: 'WiMAX使い放題' },
-                { value: 'mobile_wifi', label: 'モバイルWiFi' },
-                { value: 'ipv6_option', label: 'IPv6オプション' },
-                { value: 'security_option', label: 'セキュリティオプション' }
-            ]
+            <?php endforeach; ?>
         };
 
-        // 現在選択されている値を保存（PHP側から取得）
         const currentCategory = '<?php echo htmlspecialchars($data['category'] ?? '', ENT_QUOTES); ?>';
         const currentPlans = <?php echo json_encode($data['plan'] ?? []); ?>;
 
-        // カテゴリーオプションを生成する関数
         function updateCategoryOptions(service) {
             const categoryContainer = document.getElementById('categoryOptions');
             categoryContainer.innerHTML = '';
@@ -159,7 +152,6 @@
                     radioInput.name = 'category';
                     radioInput.value = option.value;
                     
-                    // 最初のオプションをデフォルト選択、または以前の選択値を復元
                     if (currentCategory === option.value || (!currentCategory && index === 0)) {
                         radioInput.checked = true;
                     }
@@ -174,6 +166,7 @@
                 });
             } else {
                 // サービスが選択されていない場合のメッセージ
+                // TODO: スタイルをCSSで修正
                 const messageDiv = document.createElement('div');
                 messageDiv.style.color = '#666';
                 messageDiv.style.fontStyle = 'italic';
@@ -182,7 +175,6 @@
             }
         }
 
-        // プランオプションを生成する関数
         function updatePlanOptions(service) {
             const planContainer = document.getElementById('planOptions');
             planContainer.innerHTML = '';
@@ -198,7 +190,6 @@
                     checkboxInput.name = 'plan[]';
                     checkboxInput.value = option.value;
                     
-                    // 以前の選択値を復元
                     if (currentPlans.includes(option.value)) {
                         checkboxInput.checked = true;
                     }
@@ -213,6 +204,7 @@
                 });
             } else {
                 // サービスが選択されていない場合のメッセージ
+                // TODO: スタイルをCSSで修正
                 const messageDiv = document.createElement('div');
                 messageDiv.style.color = '#666';
                 messageDiv.style.fontStyle = 'italic';
@@ -221,15 +213,12 @@
             }
         }
 
-        // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', function() {
             const serviceSelect = document.getElementById('service');
             
-            // 初期表示時にカテゴリーとプランを設定
             updateCategoryOptions(serviceSelect.value);
             updatePlanOptions(serviceSelect.value);
             
-            // サービス変更時のイベントリスナー
             serviceSelect.addEventListener('change', function() {
                 updateCategoryOptions(this.value);
                 updatePlanOptions(this.value);
