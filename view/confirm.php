@@ -8,11 +8,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>入力内容の確認</h1>
+        <h1>お問い合わせフォーム</h1>
+        <p>入力内容にお間違いないかご確認ください。</p>
         
         <div class="confirm-data">
             <div class="confirm-item">
-                <div class="confirm-label">お名前</div>
+                <div class="confirm-label">氏名</div>
                 <div class="confirm-value"><?php echo htmlspecialchars($_SESSION['form_data']['name'], ENT_QUOTES); ?></div>
             </div>
             
@@ -89,7 +90,7 @@
                     foreach ($_SESSION['form_data']['plan'] as $plan) {
                         $selectedPlans[] = $planLabels[$plan] ?? $plan;
                     }
-                    echo htmlspecialchars(implode(', ', $selectedPlans), ENT_QUOTES); 
+                    echo htmlspecialchars(implode('・', $selectedPlans), ENT_QUOTES); 
                     ?>
                 </div>
             </div>
@@ -101,10 +102,9 @@
             </div>
         </div>
         
-        <p>上記の内容で送信してもよろしいですか？</p>
         
         <div class="button-group">
-            <a href="index.php?action=input" class="btn btn-secondary">戻る</a>
+            <a href="index.php?action=input" class="btn btn-secondary">入力画面に戻る</a>
             
             <form action="index.php?action=complete" method="POST" style="display: inline;">
                 <button type="submit" class="btn btn-success">送信する</button>
