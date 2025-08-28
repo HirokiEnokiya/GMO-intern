@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <?php
+    // 設定ファイルから表示ラベルを取得
+    $labels = include(__DIR__ . '/../config/labels.php');
+    $serviceLabels = $labels['services'];
+    $categoryLabels = $labels['categories'];
+    $planLabels = $labels['plans'];
+    ?>
+    
     <div class="container">
         <h1>お問い合わせフォーム</h1>
         <p>入力内容にお間違いないかご確認ください。</p>
@@ -26,11 +34,6 @@
                 <div class="confirm-label">サービス</div>
                 <div class="confirm-value">
                     <?php 
-                    $serviceLabels = [
-                        'conoha' => 'ConoHa',
-                        'onamae' => 'お名前.com',
-                        'tokutoku' => 'とくとくBB'
-                    ];
                     echo htmlspecialchars($serviceLabels[$_SESSION['form_data']['service']] ?? $_SESSION['form_data']['service'], ENT_QUOTES); 
                     ?>
                 </div>
@@ -40,19 +43,6 @@
                 <div class="confirm-label">カテゴリー</div>
                 <div class="confirm-value">
                     <?php 
-                    $categoryLabels = [
-                        'server' => 'サーバーについて',
-                        'plan' => 'プランについて', 
-                        'payment' => 'お支払いについて',
-                        'support' => 'サポートについて',
-                        'domain_register' => 'ドメイン登録について',
-                        'domain_transfer' => 'ドメイン移管について',
-                        'dns' => 'DNS設定について',
-                        'internet' => 'インターネット接続について',
-                        'speed' => '通信速度について',
-                        'device' => 'デバイスについて',
-                        'billing' => 'ご請求について'
-                    ];
                     echo htmlspecialchars($categoryLabels[$_SESSION['form_data']['category']] ?? $_SESSION['form_data']['category'], ENT_QUOTES); 
                     ?>
                 </div>
@@ -63,29 +53,6 @@
                 <div class="confirm-label">プラン</div>
                 <div class="confirm-value">
                     <?php 
-                    $planLabels = [
-                        // ConoHa
-                        'vps_512mb' => 'VPS 512MB',
-                        'vps_1gb' => 'VPS 1GB',
-                        'vps_2gb' => 'VPS 2GB',
-                        'wing_basic' => 'WINGベーシック',
-                        'wing_standard' => 'WINGスタンダード',
-                        'wing_premium' => 'WINGプレミアム',
-                        // お名前.com
-                        'domain_com' => '.comドメイン',
-                        'domain_net' => '.netドメイン',
-                        'domain_org' => '.orgドメイン',
-                        'domain_jp' => '.jpドメイン',
-                        'ssl_certificate' => 'SSL証明書',
-                        'whois_privacy' => 'Whoisプライバシー',
-                        // とくとくBB
-                        'fiber_100m' => '光回線 100Mbps',
-                        'fiber_1g' => '光回線 1Gbps',
-                        'wimax_unlimited' => 'WiMAX使い放題',
-                        'mobile_wifi' => 'モバイルWiFi',
-                        'ipv6_option' => 'IPv6オプション',
-                        'security_option' => 'セキュリティオプション'
-                    ];
                     $selectedPlans = [];
                     foreach ($_SESSION['form_data']['plan'] as $plan) {
                         $selectedPlans[] = $planLabels[$plan] ?? $plan;
