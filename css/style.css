@@ -196,10 +196,12 @@ fieldset {
   background-color: var(--custom-gray-500);
   border-color: var(--custom-gray-500);
   color: white;
-  padding: 0.75rem 2rem;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
   font-weight: var(--custom-font-weight-medium);
   border-radius: var(--custom-border-radius-pill);
   transition: var(--custom-transition);
+  min-width: 200px;
 }
 
 .btn-custom-secondary:hover {
@@ -226,6 +228,19 @@ fieldset {
 }
 
 /* 確認画面用のスタイル */
+.confirm-value {
+  background-color: var(--custom-gray-100);
+  padding: 0.75rem;
+  border-radius: var(--custom-border-radius);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 2px solid var(--custom-gray-300);
+  min-height: 2.5rem;
+  display: block;
+  text-align: left;
+}
+
+/* 旧スタイルは削除 */
 .confirm-card {
   background-color: white;
   border: 1px solid var(--custom-gray-300);
@@ -249,14 +264,6 @@ fieldset {
   font-weight: var(--custom-font-weight-bold);
   color: var(--custom-gray-800);
   margin-bottom: 0.5rem;
-}
-
-.confirm-value {
-  background-color: var(--custom-gray-100);
-  padding: 0.75rem;
-  border-radius: var(--custom-border-radius);
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 
 /* 成功メッセージ */
@@ -284,13 +291,20 @@ fieldset {
     font-size: 1rem;
   }
 
-  .btn-custom-secondary,
+  .btn-custom-secondary {
+    width: 100%;
+    min-width: auto;
+    padding: 1rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
   .btn-custom-success {
     width: 100%;
     margin-bottom: 0.5rem;
   }
 
-  fieldset.border {
+  fieldset {
     padding: 1rem;
   }
 }
