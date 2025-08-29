@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お問い合わせフォーム - 入力画面</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
@@ -12,6 +16,46 @@
             --primary-color: #3498db;
         }
         
+        * {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        
+        label {
+            font-weight: 700;
+        }
+        
+        /* 選択肢のラベルスタイル */
+        .form-check-label {
+            font-weight: 430;
+            color: #383838;
+            font-size: 0.95rem;
+        }
+        
+        /* プレースホルダーのスタイル - より具体的なセレクター */
+        .form-control::placeholder,
+        .form-select::placeholder {
+            color: #adb5bd !important;
+            opacity: 0.6 !important;
+        }
+        
+        .form-control::-webkit-input-placeholder,
+        .form-select::-webkit-input-placeholder {
+            color: #adb5bd !important;
+            opacity: 0.6 !important;
+        }
+        
+        .form-control::-moz-placeholder,
+        .form-select::-moz-placeholder {
+            color: #adb5bd !important;
+            opacity: 0.6 !important;
+        }
+        
+        .form-control:-ms-input-placeholder,
+        .form-select:-ms-input-placeholder {
+            color: #adb5bd !important;
+            opacity: 0.6 !important;
+        }
+               
         .custom-header {
             background-color: var(--primary-color);
         }
@@ -61,6 +105,37 @@
         .form-check-input[type="radio"]:hover {
         }
         
+        /* カスタムチェックボックスのスタイル */
+        .form-check-input[type="checkbox"] {
+            border-radius: 0.25em;
+            border: 2px solid #ddd;
+            background-color: white;
+            width: 1.25em;
+            height: 1.25em;
+            margin-top: 0.125em;
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .form-check-input[type="checkbox"]:checked {
+            background-color: white;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%233498db' stroke-linecap='round' stroke-linejoin='round' stroke-width='5' d='m4 10 3 3 8-8'/%3e%3c/svg%3e");
+            box-shadow: none;
+        }
+        
+        .form-check-input[type="checkbox"]:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        /* ラジオボタンとチェックボックスのラベル間隔調整 */
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+        
     </style>
 </head>
 <body>
@@ -82,6 +157,14 @@
     </div>
     
     <div class="container">
+        <div class="row justify-content-start">
+            <div class="col-lg-8 col-md-10">
+                <p class="text-muted text-start mb-5">こちらは〇〇に関するお問い合わせフォームです。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <form action="index.php?action=confirm" method="POST">
@@ -91,6 +174,7 @@
                             <input type="text" 
                                    id="name" 
                                    name="name" 
+                                   placeholder="山田 太郎"
                                    value="<?php echo htmlspecialchars($data['name'] ?? '', ENT_QUOTES); ?>"
                                    class="form-control <?php echo isset($errors['name']) ? 'is-invalid' : ''; ?>">
                             <?php if (isset($errors['name'])): ?>
@@ -104,7 +188,8 @@
                 <div class="col-sm-9">
                     <input type="email" 
                            id="email" 
-                           name="email" 
+                           name="email"
+                           placeholder="mail@example.com" 
                            value="<?php echo htmlspecialchars($data['email'] ?? '', ENT_QUOTES); ?>"
                            class="form-control <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>">
                     <?php if (isset($errors['email'])): ?>
@@ -132,7 +217,7 @@
 
             <div class="mb-3 row">
                 <div class="col-sm-3">
-                    <span class="col-form-label">カテゴリー <span class="text-danger">*</span></span>
+                    <label class="col-form-label">カテゴリー <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-sm-9">
                     <fieldset class="border border-light p-3 rounded">
@@ -147,7 +232,7 @@
             
             <div class="mb-3 row">
                 <div class="col-sm-3">
-                    <span class="col-form-label">プラン</span>
+                    <label class="col-form-label">プラン</label>
                 </div>
                 <div class="col-sm-9">
                     <fieldset class="border border-light p-3 rounded">
@@ -167,7 +252,7 @@
                               name="message" 
                               rows="6"
                               class="form-control <?php echo isset($errors['message']) ? 'is-invalid' : ''; ?>"
-                              placeholder="お問い合わせ内容をご記入ください"><?php echo htmlspecialchars($data['message'] ?? '', ENT_QUOTES); ?></textarea>
+                              placeholder="お問い合わせ内容をご記入ください。"><?php echo htmlspecialchars($data['message'] ?? '', ENT_QUOTES); ?></textarea>
                     <?php if (isset($errors['message'])): ?>
                         <div class="invalid-feedback"><?php echo htmlspecialchars($errors['message']); ?></div>
                     <?php endif; ?>
