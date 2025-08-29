@@ -34,8 +34,34 @@
             color: white;
             box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
         }
+        
+        /* カスタムラジオボタンのスタイル */
+        .form-check-input[type="radio"] {
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            background-color: white;
+            width: 1.25em;
+            height: 1.25em;
+            margin-top: 0.125em;
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .form-check-input[type="radio"]:checked {
+            background-color: white;
+            background-image: radial-gradient(circle, var(--primary-color) 48%, transparent 48%);
+            box-shadow: none;
+        }
+        
+        .form-check-input[type="radio"]:focus {
+            /* bootstrapのスタイルの上書き */
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .form-check-input[type="radio"]:hover {
+        }
+        
     </style>
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
 </head>
 <body>
     <?php
