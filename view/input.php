@@ -64,6 +64,10 @@
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 50rem;
+            width: 400px;
         }
         
         .custom-btn:hover {
@@ -136,6 +140,19 @@
             margin-right: 0.5rem;
         }
         
+        /* 必須ラベルのスタイル */
+        .required-label {
+            background-color: #e74c3c;
+            color: white;
+            padding: 1px 4px;
+            font-size: 0.625rem;
+            font-weight: 500;
+            border-radius: 2px;
+            margin-left: 6px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
     </style>
 </head>
 <body>
@@ -157,7 +174,7 @@
     </div>
     
     <div class="container">
-        <div class="row justify-content-start">
+        <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <p class="text-muted text-start mb-5">こちらは〇〇に関するお問い合わせフォームです。</p>
             </div>
@@ -169,7 +186,7 @@
             <div class="col-lg-8 col-md-10">
                 <form action="index.php?action=confirm" method="POST">
                     <div class="mb-3 row">
-                        <label for="name" class="col-sm-3 col-form-label">氏名 <span class="text-danger">*</span></label>
+                        <label for="name" class="col-sm-3 col-form-label">氏名 <span class="required-label">必須</span></label>
                         <div class="col-sm-9">
                             <input type="text" 
                                    id="name" 
@@ -184,7 +201,7 @@
                     </div>
             
             <div class="mb-3 row">
-                <label for="email" class="col-sm-3 col-form-label">メールアドレス <span class="text-danger">*</span></label>
+                <label for="email" class="col-sm-3 col-form-label">メールアドレス <span class="required-label">必須</span></label>
                 <div class="col-sm-9">
                     <input type="email" 
                            id="email" 
@@ -199,7 +216,7 @@
             </div>
 
             <div class="mb-3 row">
-                <label for="service" class="col-sm-3 col-form-label">サービス <span class="text-danger">*</span></label>
+                <label for="service" class="col-sm-3 col-form-label">サービス <span class="required-label">必須</span></label>
                 <div class="col-sm-9">
                     <select name="service" id="service" class="form-select <?php echo isset($errors['service']) ? 'is-invalid' : ''; ?>">
                         <option value="">選択してください</option>
@@ -217,7 +234,7 @@
 
             <div class="mb-3 row">
                 <div class="col-sm-3">
-                    <label class="col-form-label">カテゴリー <span class="text-danger">*</span></label>
+                    <label class="col-form-label">カテゴリー <span class="required-label">必須</span></label>
                 </div>
                 <div class="col-sm-9">
                     <fieldset class="border border-light p-3 rounded">
@@ -245,8 +262,8 @@
                 </div>
             </div>
             
-            <div class="mb-4 row">
-                <label for="message" class="col-sm-3 col-form-label">お問い合わせ内容 <span class="text-danger">*</span></label>
+            <div class="mb-5 row">
+                <label for="message" class="col-sm-3 col-form-label">お問い合わせ内容 <span class="required-label">必須</span></label>
                 <div class="col-sm-9">
                     <textarea id="message" 
                               name="message" 
@@ -261,8 +278,8 @@
             
             <div class="row">
                 <div class="col-sm-9 offset-sm-3">
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-lg fw-bold custom-btn">確認画面へ進む</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn custom-btn">確認画面へ進む</button>
                     </div>
                 </div>
             </div>
@@ -342,7 +359,7 @@
                 // サービスが選択されていない場合のメッセージ
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'text-muted fst-italic';
-                messageDiv.textContent = 'まずサービスを選択してください';
+                messageDiv.textContent = 'サービスを選択してください';
                 categoryContainer.appendChild(messageDiv);
             }
         }
@@ -380,7 +397,7 @@
                 // サービスが選択されていない場合のメッセージ
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'text-muted fst-italic';
-                messageDiv.textContent = 'まずサービスを選択してください';
+                messageDiv.textContent = 'サービスを選択してください';
                 planContainer.appendChild(messageDiv);
             }
         }
