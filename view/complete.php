@@ -46,7 +46,7 @@
                 <!-- 戻るボタン -->
                 <div class="text-center">
                     <a href="index.php?action=input" class="btn custom-btn">
-                        <i class="bi bi-arrow-left me-2"></i>入力画面に戻る
+                        入力画面に戻る
                     </a>
                 </div>
             </div>
